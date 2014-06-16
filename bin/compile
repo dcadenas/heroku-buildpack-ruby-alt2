@@ -12,6 +12,21 @@ function indent {
   sed -u 's/^/       /'
 }
 
+function install_node {
+  echo "-----> Installing Node"
+  node_url="https://s3.amazonaws.com/language-pack-ruby/node-0.4.7.tgz"
+
+  if [ ! -d ${CACHE_DIR}/binaries ]; then
+    mkdir -p $CACHE_DIR/binaries
+  fi
+
+  if [ ! -f ${CACHE_DIR}/binaries/node ]; then
+    curl $node_url -s -o - | tar xzf - -C $CACHE_DIR/binaries/
+  fi
+  cp -ru $CACHE_DIR/binaries $BUILD_DIR/binaries
+}
+
+
 function download_yaml {
   tmpdir=.libyaml
   mkdir -p $tmpdir
@@ -68,11 +83,11 @@ function install_gems {
     mkdir -p $CACHE_DIR/.gs
   fi
 
-  mkdir -p $BUILD_DIR/.profile.d  
+  mkdir -p $BUILD_DIR/.profile.d
   cat <<-EOF > $BUILD_DIR/.profile.d/gs.sh
     export GEM_HOME=\$HOME/.gs
     export GEM_PATH=\$HOME/.gs:$(gem env path | sed "s|$CACHE_DIR|\$HOME|")
-    export PATH=\$HOME/.gs/bin:\$HOME/ruby/bin:bin:/usr/bin:/bin
+    export PATH=\$HOME/.gs/bin:\$HOME/ruby/bin:bin:\$HOME/binaries:/usr/bin:/bin
     export RACK_ENV=production
 EOF
 
@@ -88,5 +103,6 @@ EOF
 }
 
 set_ruby_version
+install_node
 install_ruby
 install_gems
