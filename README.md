@@ -1,13 +1,15 @@
-# Heroku buildpack: Ruby + gs + dep
+# Heroku buildpack: Ruby + dep + node
 
-A buildpack to use Ruby (MRI) on Heroku using [dep](https://github.com/cyx/dep/) for
-dependency management. 
+A buildpack to use Ruby (MRI) with node on Heroku using [dep](https://github.com/cyx/dep/) for
+dependency management.
+
+This is a fork of [heroku-buildpack-ruby-alt](https://github.com/guilleiguaran/heroku-buildpack-ruby-alt) that adds node to the system.
 
 ## Usage
 
 Just create a Heroku app like this:
 
-    heroku create --buildpack https://github.com/guilleiguaran/heroku-buildpack-ruby-alt
+    heroku create --buildpack https://github.com/dcadenas/heroku-buildpack-ruby-alt2
 
 ## Customization
 
